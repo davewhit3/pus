@@ -3,9 +3,10 @@ SYSTEM = linux
 SRCDIR = src
 BINDIR = bin
 CC = gcc
+CXX = g++
 CFLAGS = -O2 -pedantic -Wall
 
-all: client1 server1 client2 server2 client3 server3 server4 server5
+all: client1 server1 client2 server2  server4 server5
 
 clean:
 	@rm -rf $(BINDIR)/*.o \
@@ -54,10 +55,10 @@ server3.o: $(SRCDIR)/server3.c
 	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
 	
 server4: server4.o
-	$(CC) $(CFLAGS) $(BINDIR)/$@.o -o $(BINDIR)/$@
+	$(CXX) $(CXXLAGS) $(BINDIR)/$@.o -o $(BINDIR)/$@
 
-server4.o: $(SRCDIR)/server4.c
-	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
+server4.o: $(SRCDIR)/server4.cpp
+	$(CXX) $(CXXLAGS) -c $(SRCDIR)/$(basename $@).cpp -o $(BINDIR)/$(basename $@).o
 
 server5: server5.o
 	$(CC) $(CFLAGS) -pthread $(BINDIR)/$@.o -o $(BINDIR)/$@
