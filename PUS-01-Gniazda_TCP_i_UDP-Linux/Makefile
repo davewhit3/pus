@@ -6,7 +6,7 @@ CC = gcc
 CXX = g++
 CFLAGS = -O2 -pedantic -Wall
 
-all: client1 server1 client2 server2  server4 server5
+all: rver5
 
 clean:
 	@rm -rf $(BINDIR)/*.o \
