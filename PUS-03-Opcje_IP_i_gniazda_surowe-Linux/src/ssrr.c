@@ -39,11 +39,18 @@ int main(int argc, char** argv) {
     /*
      * Opcje IP:
      * NOP, SSRR, len, ptr, adr_IP_1, adr_IP_2, IP_docelowe */
-    unsigned char ip_options[16] = {
+    /*unsigned char ip_options[16] = {
         1, 0x89, 15, 4,
         192,0,2,1,
         195,136,186,1,
         213,172,178,41
+    };*/
+
+    unsigned char ip_options[16] = {
+        1, 0x89, 15, 4,
+        216,58,209,163,
+        94,152,2,18,
+        212,8,251,137
     };
 
     if (argc != 2) {

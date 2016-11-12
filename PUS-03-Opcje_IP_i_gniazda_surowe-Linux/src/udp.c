@@ -42,7 +42,6 @@ int main(int argc, char** argv) {
 
     /* Struktura zawierajaca wskazowki dla funkcji getaddrinfo(): */
     struct addrinfo         hints;
-
     /*
      * Wskaznik na liste zwracana przez getaddrinfo() oraz wskaznik uzywany do
      * poruszania sie po elementach listy:
@@ -81,14 +80,22 @@ int main(int argc, char** argv) {
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family         =       AF_INET; /* Domena komunikacyjna (IPv4). */
     hints.ai_socktype       =       SOCK_RAW; /* Typ gniazda. */
-    hints.ai_protocol       =       IPPROTO_UDP; /* Protokol. */
+    hints.ai_protocol       =       IPPROTO_TCP; /* Protokol. */
 
+	struct hostent        *he;
+	struct sockaddr_in  server;
+	int                 socket;
 
-    retval = getaddrinfo(argv[1], NULL, &hints, &result);
-    if (retval != 0) {
-        fprintf(stderr, "getaddrinfo(): %s\n", gai_strerror(retval));
-        exit(EXIT_FAILURE);
-    }
+	const char hostname[] = "localhost";
+
+	  /* resolve hostname */
+	if ( (he = gethostbyname(hostname) ) == NULL ) {
+	    exit(EXIT_FAILURE);
+	}
+
+	  /* copy the network address to sockaddr_in structure */
+	  memcpy(&server.sin_addr, he->h_addr_list[0], he->h_length);
+
 
     /* Opcja okreslona w wywolaniu setsockopt() zostanie wlaczona: */
     socket_option = 1;
@@ -197,7 +204,7 @@ int main(int argc, char** argv) {
 
     udp_header->uh_sum              = (checksum == 0) ? 0xffff : checksum;
 
-    fprintf(stdout, "Sending UDP...\n");
+    fprintf(stdout, "Sending TCP...\n");
 
     /* Wysylanie datagramow co 1 sekunde: */
     for (;;) {
