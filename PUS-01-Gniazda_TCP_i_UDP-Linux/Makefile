@@ -5,8 +5,8 @@ BINDIR = bin
 CC = gcc
 CXX = g++
 CFLAGS = -O2 -pedantic -Wall
-
-all: server5
+IGNORE_UNUSED = -Wno-unused-variable
+all: libpalindrome.o c3 s3 server4 client4
 
 clean:
 	@rm -rf $(BINDIR)/*.o \
@@ -53,18 +53,30 @@ server3: server3.o libpalindrome.o
 
 server3.o: $(SRCDIR)/server3.c
 	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
-	
+
+c3: c3.o
+	$(CC) $(CFLAGS) $(BINDIR)/$@.o -o $(BINDIR)/$@
+
+c3.o: $(SRCDIR)/client3.c
+	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
+
+s3: s3.o libpalindrome.o
+	$(CC) $(CFLAGS) $(BINDIR)/$@.o $(BINDIR)/libpalindrome.o -o $(BINDIR)/$@
+
+s3.o: $(SRCDIR)/server3.c
+	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
+
 server4: server4.o
-	$(CXX) $(CXXLAGS) $(BINDIR)/$@.o -o $(BINDIR)/$@
+	$(CXX) $(BINDIR)/$@.o -o $(BINDIR)/$@
 
 server4.o: $(SRCDIR)/server4.cpp
-	$(CXX) $(CXXLAGS) -c $(SRCDIR)/$(basename $@).cpp -o $(BINDIR)/$(basename $@).o
+	$(CXX) $(SRCDIR)/$(basename $@).cpp -o $(BINDIR)/$(basename $@).o
 
-server5: server5.o
-	$(CC) -pthread $(BINDIR)/$@.o -o $(BINDIR)/$@
+#server5: server5.o
+#	$(CC) $(CFLAGS) $(BINDIR)/$@.o -o $(BINDIR)/$@
 
-server5.o: $(SRCDIR)/server5.c
-	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
+#server5.o: $(SRCDIR)/server5.c
+#	$(CC) $(IGNORE_UNUSED) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
 
 libpalindrome.o: $(SRCDIR)/libpalindrome.c
-	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
+	$(CC) $(IGNORE_UNUSED) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
