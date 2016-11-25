@@ -6,7 +6,7 @@ CC = gcc
 CXX = g++
 CFLAGS = -O2 -pedantic -Wall
 
-all: rver5
+all: server5
 
 clean:
 	@rm -rf $(BINDIR)/*.o \
@@ -61,7 +61,7 @@ server4.o: $(SRCDIR)/server4.cpp
 	$(CXX) $(CXXLAGS) -c $(SRCDIR)/$(basename $@).cpp -o $(BINDIR)/$(basename $@).o
 
 server5: server5.o
-	$(CC) $(CFLAGS) -pthread $(BINDIR)/$@.o -o $(BINDIR)/$@
+	$(CC) -pthread $(BINDIR)/$@.o -o $(BINDIR)/$@
 
 server5.o: $(SRCDIR)/server5.c
 	$(CC) $(CFLAGS) -c $(SRCDIR)/$(basename $@).c -o $(BINDIR)/$(basename $@).o
